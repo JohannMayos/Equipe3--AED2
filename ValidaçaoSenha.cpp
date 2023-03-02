@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_PATTERN_LEN 32
+#define MAX_PATTERN_LEN 128
 
 int bmBc[256];
 int bmGs[MAX_PATTERN_LEN];
@@ -80,17 +80,27 @@ int isPasswordValid(char *password, int passwordLen) {
 //Execução da validação da senha//
 
 int main() {
-    char password[32];
+    char password[100];
     int passwordLen;
+    int hasSpaces = 0;
 
     // lê a senha a ser validada do usuário
-    fgets(password, 32, stdin);
+    fgets(password, 100, stdin);
     passwordLen = strlen(password) - 1;
     password[passwordLen] = '\0';
     
 
     // verifica se a senha é válida
-    if (isPasswordValid(password, passwordLen)) {
+    
+    for (int i = 0; i < passwordLen; i++) {
+        if (password[i] == ' ') {
+            hasSpaces = 1;
+            break;
+        }
+    }
+    
+    
+    if (!hasSpaces && passwordLen >= 6 && passwordLen <= 32 && isPasswordValid(password, passwordLen)) {
         printf("Senha valida.");
     } 
 	else {
